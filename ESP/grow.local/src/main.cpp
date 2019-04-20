@@ -1,0 +1,5 @@
+#include "simba.h"
+
+int main () {
+  return 0;
+}
