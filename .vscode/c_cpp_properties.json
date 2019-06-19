@@ -1,0 +1,80 @@
+{
+    "configurations": [
+        {
+            "name": "!!! WARNING !!! AUTO-GENERATED FILE, PLEASE DO NOT MODIFY IT AND USE https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "/home/curieos/.platformio/packages/framework-simba/src",
+                "/home/curieos/.platformio/packages/framework-simba/src/boards/huzzah",
+                "/home/curieos/.platformio/packages/framework-simba/src/mcus/esp8266",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/extra_include",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/espressif",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/espressif/esp8266",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/lwip",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/lwip/ipv4",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/lwip/ipv6",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/compat",
+                "/home/curieos/.platformio/packages/framework-simba/src/drivers/ports/esp",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/mbedtls/include",
+                "/home/curieos/.platformio/packages/framework-simba/src/kernel/ports/esp/gnu",
+                "/home/curieos/.platformio/packages/framework-simba/src/oam/ports/esp",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/spiffs-0.3.5/src",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/atto",
+                "/home/curieos/.platformio/packages/framework-simba/3pp/atto/curses",
+                "/home/curieos/.platformio/packages/tool-unity",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": "${workspaceRoot}/.vscode/.browse.c_cpp.db",
+                "path": [
+                    "/home/curieos/.platformio/packages/framework-simba/src",
+                    "/home/curieos/.platformio/packages/framework-simba/src/boards/huzzah",
+                    "/home/curieos/.platformio/packages/framework-simba/src/mcus/esp8266",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/extra_include",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/espressif",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/espressif/esp8266",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/lwip",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/lwip/ipv4",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/ESP8266_RTOS_SDK/include/lwip/ipv6",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/compat",
+                    "/home/curieos/.platformio/packages/framework-simba/src/drivers/ports/esp",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/mbedtls/include",
+                    "/home/curieos/.platformio/packages/framework-simba/src/kernel/ports/esp/gnu",
+                    "/home/curieos/.platformio/packages/framework-simba/src/oam/ports/esp",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/spiffs-0.3.5/src",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/atto",
+                    "/home/curieos/.platformio/packages/framework-simba/3pp/atto/curses",
+                    "/home/curieos/.platformio/packages/tool-unity",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=30607",
+                "ESP8266",
+                "ARDUINO_ARCH_ESP8266",
+                "ARDUINO_ESP8266_ESP12",
+                "F_CPU=80000000L",
+                "ARCH_ESP",
+                "FAMILY_ESP",
+                "MCU_ESP8266",
+                "BOARD_HUZZAH",
+                "VERSION=15.0.3",
+                "MBEDTLS_USER_CONFIG_FILE=\"\"mbedtls/user_config.h\"\"",
+                "ICACHE_FLASH",
+                "__STRICT_ANSI__",
+                "__ets__",
+                ""
+            ],
+            "intelliSenseMode": "clang-x64",
+            "cStandard": "c99",
+            "cppStandard": "c++11",
+            "compilerPath": "\"/home/curieos/.platformio/packages/toolchain-xtensa@1.40802.0/bin/xtensa-lx106-elf-gcc\" -mlongcalls -mtext-section-literals"
+        }
+    ],
+    "version": 4
+}
