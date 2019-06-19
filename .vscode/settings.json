@@ -1,0 +1,6 @@
+{
+	"terminal.integrated.env.linux": {
+		"PATH": "/home/curieos/.platformio/penv/bin:/home/curieos/.platformio/penv:/app/bin:/usr/bin",
+		"PLATFORMIO_CALLER": "vscode"
+	}
+}
