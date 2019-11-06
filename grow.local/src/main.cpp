@@ -1,12 +1,19 @@
 #include <ESPAsyncWebServer.h>
+#include <ESPmDNS.h>
+
+#include "scanwifiserver.h"
+#include "restserver.h"
 
 AsyncWebServer Server(80);
+IPAddress apIP(192, 168, 4, 1);
 
-void GetRoot() {}
+ScanWifiServer* scanWifi;
+RestServer* restServer;
 
 void setup() {
+	WiFi.mode(WIFI_AP_STA);
+    WiFi.softAP("grow.local module");
 
-	
 	Server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
 		AsyncWebServerResponse *response =
 			request->beginResponse(200, "application/json", "{}");
@@ -28,8 +35,6 @@ void setup() {
 				json += ",\"bssid\":\"" + WiFi.BSSIDstr(i) + "\"";
 				json += ",\"channel\":" + String(WiFi.channel(i));
 				json += ",\"secure\":" + String(WiFi.encryptionType(i));
-				json += ",\"hidden\":" +
-						String(WiFi.isHidden(i) ? "true" : "false");
 				json += "}";
 			}
 			WiFi.scanDelete();
@@ -41,6 +46,11 @@ void setup() {
 		request->send(200, "application/json", json);
 		json = String();
 	});
+
+	Server.begin();
+
+	MDNS.begin("grow");
+	MDNS.addService("http", "tcp", 80);
 }
 
 void loop() {}
