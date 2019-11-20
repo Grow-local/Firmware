@@ -3,10 +3,11 @@
 
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
+#include <SPIFFS.h>
 
 class ScanWifiServer {
 public:
-	ScanWifiServer();
+	ScanWifiServer(AsyncWebServer *server);
 	~ScanWifiServer();
 private:
 
