@@ -1,9 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	</head>
-	<body>
-		<h1>hello world</h1>
-	</body>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="navbar-brand">Grow.local</div>
+	</nav>
+
+	<main class="container">
+		<div class="row p-3">
+			<div class="card col p-0">
+				<div class="card-body" id="app">
+					<h2 v-for="(network, index) in networks" :key="index">{{ network.ssid }}</h2>
+				</div>
+			</div>
+		</div>
+	</main>
+	<script src="./js/vue.js"></script>
+	<script src="./js/axios.min.js"></script>
+	<script src="./js/main.js"></script>
+</body>
+
 </html>
