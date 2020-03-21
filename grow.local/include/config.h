@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 13:29:53
+ * Last Modified: Saturday March 21st 2020 14:14:16
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -17,7 +17,7 @@
 #include <SPIFFS.h>
 #include <vector>
 
-const size_t CONFIG_MAX_FILE_SIZE = 1000;
+const size_t CONFIG_MAX_FILE_SIZE = 2000;
 const size_t JSON_CAPACITY = JSON_OBJECT_SIZE(2) + CONFIG_MAX_FILE_SIZE;
 
 #define DEBUG

@@ -4,7 +4,7 @@
  * File Created: Friday, 20th March 2020 10:56:27
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 14:05:37
+ * Last Modified: Saturday March 21st 2020 14:14:09
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -56,7 +56,7 @@ void ModuleConfig::WriteConfigToFile() {
 		return;
 	}
 
-	char networks_string[500] = "[";
+	char networks_string[1000] = "[";
 	for (std::vector<Network>::iterator iter = networks.begin(); iter < networks.end(); iter++) {
 		char network_string[200] = "";
 		sprintf(network_string, "{\"ssid\": \"%s\", \"password\": \"%s\"}", iter->ssid, iter->password);
