@@ -4,7 +4,7 @@
  * File Created: Friday, 20th March 2020 10:56:27
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 9:35:40
+ * Last Modified: Saturday March 21st 2020 9:39:36
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -16,6 +16,25 @@ const char* MODULE_CONFIG_FILE_PATH = "/module_config.json";
 
 char ModuleConfig::name[100] = "";
 int16_t ModuleConfig::timezone_offset = 0;
+
+void ModuleConfig::ReadConfigFromFile() {
+	File file = SPIFFS.open(MODULE_CONFIG_FILE_PATH);
+	if (!file) {
+#ifdef DEBUG
+		Serial.println("Failed to open module config file for reading");
+#endif
+		return;
+	}
+
+	DynamicJsonDocument json_config(JSON_CAPACITY);
+	auto raw_config = file.readString();
+	deserializeJson(json_config, raw_config);
+	try { strcpy(name, json_config["moduleName"]); }
+	catch(int e) { strcpy(name, ""); }
+	timezone_offset = json_config["timezoneOffset"];
+	
+	file.close();
+}
 
 void ModuleConfig::SetupModule(const char *raw_config) {
 	DynamicJsonDocument json_config(JSON_CAPACITY);

@@ -28,6 +28,8 @@ class ModuleConfig {
 public:
 	static char name[100];
 	static int16_t timezone_offset;
+
+	static void ReadConfigFromFile();
 	static void SetupModule(const char* raw_config);
 };
 

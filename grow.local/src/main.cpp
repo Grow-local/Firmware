@@ -3,6 +3,7 @@
 #include <ESPmDNS.h>
 #include <SPIFFS.h>
 #include <vector>
+#include <elapsedMillis.h>
 
 #include "config.h"
 #include "restserver.h"
@@ -50,6 +51,7 @@ void setup() {
 #endif
 
 	SPIFFS.begin();
+	ModuleConfig::ReadConfigFromFile();
 
 	auto networks = readAP(SPIFFS);
 	if (networks.size() > 0) {
@@ -72,6 +74,8 @@ void setup() {
 
 			Server->begin();
 
+			MDNS.begin(ModuleConfig::name);
+			MDNS.addService("http", "tcp", 80);
 		} else
 			networks.clear();
 	}
