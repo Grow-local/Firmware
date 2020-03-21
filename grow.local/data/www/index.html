@@ -55,7 +55,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-primary" v-on:click="joinNetwork">Join Network</button>
+						<button type="button" class="btn btn-primary" v-on:click="joinNetwork"><span v-if="!submitted">Join Network</span><div v-if="submitted" class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div></button>
 					</div>
 				</div>
 			</div>
@@ -64,7 +64,7 @@
 	<script src="./js/vue.js"></script>
 	<script src="./js/axios.min.js"></script>
 	<script src="./js/main.js"></script>
-	<script src="./js/jquery-3.3.1.slim.min.js"></script>
+	<script src="./js/jquery.slim.min.js"></script>
 	<script src="./js/bootstrap.min.js"></script>
 </body>
 

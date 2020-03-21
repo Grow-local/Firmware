@@ -4,7 +4,8 @@ var app = new Vue({
 		password: "",
 		selectedNetwork: {},
 		networks: [],
-		loading: false
+		loading: false,
+		submitted: false
 	},
 	methods: {
 		getNetworks: function () {
@@ -14,7 +15,13 @@ var app = new Vue({
 			}).finally(() => {
 				this.loading = false;
 			});
-		});
+		},
+		joinNetwork: function () {
+			this.submitted = true;
+			axios.post("http://grow.local/join", { ssid: this.selectedNetwork.ssid, password: this.password }).then(() => {
+				
+			});
+		}
 	},
 	mounted() {
 		this.getNetworks();

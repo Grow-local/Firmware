@@ -3,10 +3,10 @@
 ScanWifiServer::ScanWifiServer(AsyncWebServer *server) {
 	WiFi.softAP("grow.local module");
 
-	server->serveStatic("/", SPIFFS, "/");
+	server->serveStatic("/", SPIFFS, "/www/");
 
 	server->on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-		File file = SPIFFS.open("/index.html", "r");
+		File file = SPIFFS.open("/www/index.html", "r");
 		AsyncWebServerResponse *response =
 			request->beginResponse(200, "text/html", file.readStringUntil(EOF));
 		response->addHeader("Connection", "close");
