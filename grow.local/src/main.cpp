@@ -3,18 +3,24 @@
 #include <SPIFFS.h>
 
 #include "config.h"
-#include "scanwifiserver.h"
 #include "restserver.h"
+#include "scanwifiserver.h"
 
-AsyncWebServer* Server = new AsyncWebServer(80);
+AsyncWebServer *Server = new AsyncWebServer(80);
 
-ScanWifiServer* scanWifi;
-RestServer* restServer;
+ScanWifiServer *scanWifi;
+RestServer *restServer;
+
+struct Network {
+	char ssid[100];
+	char password[100];
+};
 
 void setup() {
-	#ifdef DEBUG
+#ifdef DEBUG
 	Serial.begin(BAUDRATE);
-	#endif
+	delay(2000);
+#endif
 
 	WiFi.mode(WIFI_AP_STA);
 	SPIFFS.begin();
