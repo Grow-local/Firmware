@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 14:16:35
+ * Last Modified: Saturday March 21st 2020 14:54:32
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -37,10 +37,11 @@ void setup() {
 	SPIFFS.begin();
 	ModuleConfig::ReadConfigFromFile();
 
-	if (ModuleConfig::networks.size() > 0) {
+	auto networks = ModuleConfig::GetNetworks();
+	if (networks.size() > 0) {
 		int network = 0;
-		while (WiFi.status() != WL_CONNECTED && network < ModuleConfig::networks.size()) {
-			WiFi.begin(ModuleConfig::networks[network].ssid, ModuleConfig::networks[network].password);
+		while (WiFi.status() != WL_CONNECTED && network < networks.size()) {
+			WiFi.begin(networks[network].ssid, networks[network].password);
 
 			while (WiFi.status() != WL_CONNECTED) {
 				if (WiFi.status() == WL_CONNECT_FAILED ||
@@ -82,7 +83,7 @@ void setup() {
 
 			Server->begin();
 
-			MDNS.begin(ModuleConfig::name);
+			MDNS.begin(ModuleConfig::GetName());
 			MDNS.addService("http", "tcp", 80);
 		} else WiFi.mode(WIFI_AP);
 	} else WiFi.mode(WIFI_AP);

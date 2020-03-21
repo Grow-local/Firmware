@@ -4,7 +4,7 @@
  * File Created: Wednesday, 20th November 2019 9:35:52
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 14:16:23
+ * Last Modified: Saturday March 21st 2020 14:56:35
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -16,7 +16,7 @@ RestServer::RestServer(AsyncWebServer *server) {
 	timeClient = new NTPClient(ntpUDP);
 
 	timeClient->begin();
-	timeClient->setTimeOffset(ModuleConfig::timezone_offset);
+	timeClient->setTimeOffset(ModuleConfig::GetTimezoneOffset());
 
 	server->on("/module/info", HTTP_GET, [](AsyncWebServerRequest *request) {
 		char json[500] = "";

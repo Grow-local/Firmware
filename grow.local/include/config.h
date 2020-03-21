@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 14:14:16
+ * Last Modified: Saturday March 21st 2020 14:57:08
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -32,15 +32,17 @@ struct Network {
 
 class ModuleConfig {
 public:
-	static char name[100];
-	static int16_t timezone_offset;
-	static std::vector<Network> networks;
-
 	static void ReadConfigFromFile();
 	static void WriteConfigToFile();
 	static void AddNetwork(const char* ssid, const char* password);
+	static std::vector<Network> GetNetworks() { return networks; }
+	static const char* GetName() { return name; }
+	static int16_t GetTimezoneOffset() { return timezone_offset; }
 	static void SetupModule(const char* raw_config);
 private:
+	static char name[100];
+	static int16_t timezone_offset;
+	static std::vector<Network> networks;
 };
 
 class PlantConfig {
