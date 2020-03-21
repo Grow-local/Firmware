@@ -3,7 +3,7 @@
 #include <ESPmDNS.h>
 #include <SPIFFS.h>
 #include <vector>
-#include <elapsedMillis.h>
+#include <ArduinoOTA.h>
 
 #include "config.h"
 #include "restserver.h"
@@ -39,6 +39,31 @@ void setup() {
 #ifdef DEBUG
 			Serial.println("Connected");
 #endif
+
+			ArduinoOTA.onStart([]() {
+				char type[100] = "";
+				if (ArduinoOTA.getCommand() == U_FLASH) strcat(type, "sketch");
+				else {
+					strcat(type, "filesystem");
+					SPIFFS.end();
+				}
+#ifdef DEBUG
+				Serial.printf("Updating %s\n", type);
+#endif
+			}).onEnd([]() {
+#ifdef DEBUG
+				Serial.println("\nEnd");
+#endif
+			}).onProgress([](unsigned int progress, unsigned int total) {
+#ifdef DEBUG
+				Serial.printf("Progress: %u%%\n", (progress / (total / 100)));
+#endif
+			}).onError([](ota_error_t error) {
+
+			});
+
+			ArduinoOTA.begin();
+
 			restServer = new RestServer(Server);
 
 			Server->begin();
@@ -62,4 +87,6 @@ void setup() {
 	}
 }
 
-void loop() {}
+void loop() {
+	if (WiFi.getMode() != WIFI_AP) ArduinoOTA.handle();
+}
