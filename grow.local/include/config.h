@@ -30,6 +30,7 @@ public:
 	static int16_t timezone_offset;
 
 	static void ReadConfigFromFile();
+	static void WriteConfigToFile();
 	static void SetupModule(const char* raw_config);
 };
 
