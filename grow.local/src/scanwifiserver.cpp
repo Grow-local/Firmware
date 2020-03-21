@@ -1,5 +1,21 @@
 #include "scanwifiserver.h"
 
+void addAP(fs::FS &fs, char* network){
+    Serial.printf("Appending to file: %s\n", "/ap.txt");
+
+    File file = fs.open("/ap.txt", FILE_APPEND);
+    if(!file){
+        Serial.println("Failed to open file for appending");
+        return;
+    }
+    if(file.println(network)){
+        Serial.println("Message appended");
+    } else {
+        Serial.println("Append failed");
+    }
+    file.close();
+}
+
 ScanWifiServer::ScanWifiServer(AsyncWebServer *server) {
 	WiFi.softAP("grow.local module");
 
@@ -39,7 +55,12 @@ ScanWifiServer::ScanWifiServer(AsyncWebServer *server) {
 		json = String();
 	});
 
-	server->on("/join", HTTP_POST, [](AsyncWebServerRequest *request) {
-		
+	server->on("/join", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, [](AsyncWebServerRequest* request, uint8_t *data, size_t len, size_t index, size_t total) {
+		char network[len] = "";
+		strcat(network, (const char*)data);
+		addAP(SPIFFS, network);
+		request->send(201);
+		delay(1000);
+		ESP.restart();
 	});
 }
