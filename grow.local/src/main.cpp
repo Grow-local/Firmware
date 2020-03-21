@@ -14,36 +14,6 @@ AsyncWebServer *Server = new AsyncWebServer(80);
 ScanWifiServer *scanWifi;
 RestServer *restServer;
 
-struct Network {
-	char ssid[100];
-	char password[100];
-};
-
-std::vector<Network> readAP(fs::FS &fs) {
-	// fs.remove("/ap.txt");
-	File file = fs.open("/ap.txt");
-	std::vector<Network> networks;
-	if (!file) {
-#ifdef DEBUG
-		Serial.println("Failed to open file for reading");
-#endif
-		return networks;
-	}
-
-	while (file.available()) {
-		DynamicJsonDocument n(JSON_CAPACITY);
-		auto s = file.readStringUntil('\n');
-		deserializeJson(n, s);
-		struct Network network;
-		strcpy(network.ssid, n["ssid"]);
-		strcpy(network.password, n["password"]);
-		networks.push_back(network);
-	}
-
-	file.close();
-	return networks;
-}
-
 void setup() {
 #ifdef DEBUG
 	Serial.begin(BAUDRATE);
@@ -53,11 +23,10 @@ void setup() {
 	SPIFFS.begin();
 	ModuleConfig::ReadConfigFromFile();
 
-	auto networks = readAP(SPIFFS);
-	if (networks.size() > 0) {
+	if (ModuleConfig::networks.size() > 0) {
 		int network = 0;
-		while (WiFi.status() != WL_CONNECTED && network < networks.size()) {
-			WiFi.begin(networks[network].ssid, networks[network].password);
+		while (WiFi.status() != WL_CONNECTED && network < ModuleConfig::networks.size()) {
+			WiFi.begin(ModuleConfig::networks[network].ssid, ModuleConfig::networks[network].password);
 
 			while (WiFi.status() != WL_CONNECTED) {
 				if (WiFi.status() == WL_CONNECT_FAILED ||
@@ -76,15 +45,13 @@ void setup() {
 
 			MDNS.begin(ModuleConfig::name);
 			MDNS.addService("http", "tcp", 80);
-		} else
-			networks.clear();
-	}
+		} else WiFi.mode(WIFI_AP);
+	} else WiFi.mode(WIFI_AP);
 
-	if (networks.size() == 0) {
+	if (WiFi.getMode() == WIFI_AP) {
 #ifdef DEBUG
 		Serial.println("Starting ScanWifiServer");
 #endif
-		WiFi.mode(WIFI_AP);
 
 		scanWifi = new ScanWifiServer(Server);
 

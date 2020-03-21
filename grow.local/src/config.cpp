@@ -4,7 +4,7 @@
  * File Created: Friday, 20th March 2020 10:56:27
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 9:40:11
+ * Last Modified: Saturday March 21st 2020 14:05:37
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -16,6 +16,7 @@ const char* MODULE_CONFIG_FILE_PATH = "/module_config.json";
 
 char ModuleConfig::name[100] = "";
 int16_t ModuleConfig::timezone_offset = 0;
+std::vector<Network> ModuleConfig::networks = {};
 
 void ModuleConfig::ReadConfigFromFile() {
 	File file = SPIFFS.open(MODULE_CONFIG_FILE_PATH);
@@ -32,6 +33,16 @@ void ModuleConfig::ReadConfigFromFile() {
 	try { strcpy(name, json_config["moduleName"]); }
 	catch(int e) { strcpy(name, ""); }
 	timezone_offset = json_config["timezoneOffset"];
+
+	JsonArray networks_json = json_config["networks"];
+	for(auto network : networks_json) {
+		struct Network newNetwork;
+		try {
+			strcpy(newNetwork.ssid, network["ssid"]);
+			strcpy(newNetwork.password, network["password"]);
+		} catch(int e) { break; }
+		networks.push_back(newNetwork);
+	}
 	
 	file.close();
 }
@@ -45,11 +56,27 @@ void ModuleConfig::WriteConfigToFile() {
 		return;
 	}
 
+	char networks_string[500] = "[";
+	for (std::vector<Network>::iterator iter = networks.begin(); iter < networks.end(); iter++) {
+		char network_string[200] = "";
+		sprintf(network_string, "{\"ssid\": \"%s\", \"password\": \"%s\"}", iter->ssid, iter->password);
+		strcat(networks_string, network_string);
+		if (iter != networks.end()) strcat(network_string, ",");
+	}
+
 	char config_str[CONFIG_MAX_FILE_SIZE] = "";
-	sprintf(config_str, "{ moduleName: \"%s\", timezoneOffset: \"%d\" }", name, timezone_offset);
+	sprintf(config_str, "{\"moduleName\": \"%s\", \"timezoneOffset\": \"%d\", \"networks\": %s}", name, timezone_offset, networks_string);
 	file.print(config_str);
 
 	file.close();
+}
+
+void ModuleConfig::AddNetwork(const char* ssid, const char* password) {
+	struct Network newNetwork;
+	strcpy(newNetwork.ssid, ssid);
+	strcpy(newNetwork.password, password);
+	networks.push_back(newNetwork);
+	ModuleConfig::WriteConfigToFile();
 }
 
 void ModuleConfig::SetupModule(const char *raw_config) {
@@ -58,7 +85,5 @@ void ModuleConfig::SetupModule(const char *raw_config) {
 	timezone_offset = json_config["timezoneOffset"];
 	timezone_offset *= 60;
 	strcpy(name, json_config["name"]);
-	Serial.println(timezone_offset);
-	Serial.println(name);
 	ModuleConfig::WriteConfigToFile();
 }
