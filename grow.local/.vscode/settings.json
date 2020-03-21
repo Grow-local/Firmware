@@ -1,4 +1,7 @@
 {
+	"psi-header.config": {
+		"license": "MIT"
+	},
 	"terminal.integrated.env.linux": {
 		"PATH": "/home/curieos/.platformio/penv/bin:/home/curieos/.platformio/penv:/home/curieos/.nvm/versions/node/v12.3.1/bin:/home/curieos/.local/bin:/home/curieos/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/var/lib/snapd/snap/bin",
 		"PLATFORMIO_CALLER": "vscode"
