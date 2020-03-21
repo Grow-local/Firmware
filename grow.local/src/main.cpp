@@ -52,6 +52,30 @@ void setup() {
 	SPIFFS.begin();
 
 	auto networks = readAP(SPIFFS);
+	if (networks.size() > 0) {
+		int network = 0;
+		while (WiFi.status() != WL_CONNECTED && network < networks.size()) {
+			WiFi.begin(networks[network].ssid, networks[network].password);
+
+			while (WiFi.status() != WL_CONNECTED) {
+				if (WiFi.status() == WL_CONNECT_FAILED ||
+					WiFi.status() == WL_NO_SSID_AVAIL)
+					break;
+			}
+			network++;
+		}
+		if (WiFi.status() == WL_CONNECTED) {
+#ifdef DEBUG
+			Serial.println("Connected");
+#endif
+			restServer = new RestServer(Server);
+
+			Server->begin();
+
+		} else
+			networks.clear();
+	}
+
 	if (networks.size() == 0) {
 #ifdef DEBUG
 		Serial.println("Starting ScanWifiServer");
