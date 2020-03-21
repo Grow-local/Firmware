@@ -1,3 +1,17 @@
+/*
+ * File: main.cpp
+ * Project: src
+ * File Created: Tuesday, 19th November 2019 17:04:12
+ * Author: Caroline (caroline@curieos.com)
+ * -----
+ * Last Modified: Saturday March 21st 2020 14:16:35
+ * Modified By: Caroline
+ * -----
+ * License: MIT License
+ */
+
+#ifndef UNIT_TEST
+
 #include <ArduinoJson.h>
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
@@ -90,3 +104,5 @@ void setup() {
 void loop() {
 	if (WiFi.getMode() != WIFI_AP) ArduinoOTA.handle();
 }
+
+#endif

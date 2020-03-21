@@ -1,3 +1,15 @@
+/*
+ * File: restserver.cpp
+ * Project: src
+ * File Created: Wednesday, 20th November 2019 9:35:52
+ * Author: Caroline (caroline@curieos.com)
+ * -----
+ * Last Modified: Saturday March 21st 2020 14:16:23
+ * Modified By: Caroline
+ * -----
+ * License: MIT License
+ */
+
 #include "restserver.h"
 
 RestServer::RestServer(AsyncWebServer *server) {
