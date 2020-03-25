@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 14:54:32
+ * Last Modified: Tuesday March 24th 2020 16:13:08
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -18,6 +18,7 @@
 #include <SPIFFS.h>
 #include <vector>
 #include <ArduinoOTA.h>
+#include <time.h>
 
 #include "config.h"
 #include "restserver.h"
@@ -52,9 +53,10 @@ void setup() {
 		}
 		if (WiFi.status() == WL_CONNECTED) {
 #ifdef DEBUG
-			Serial.println("Connected");
+			Serial.printf("Connected as %s.local\n", ModuleConfig::GetName());
 #endif
-
+			configTime(ModuleConfig::GetTimezoneOffset(), DAYLIGHT_SAVINGS_OFFSET, TIME_SERVER);
+			
 			ArduinoOTA.onStart([]() {
 				char type[100] = "";
 				if (ArduinoOTA.getCommand() == U_FLASH) strcat(type, "sketch");

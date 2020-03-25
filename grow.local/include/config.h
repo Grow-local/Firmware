@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 14:57:08
+ * Last Modified: Tuesday March 24th 2020 18:43:31
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -16,9 +16,19 @@
 #include <ArduinoJson.h>
 #include <SPIFFS.h>
 #include <vector>
+#include <time.h>
 
 const size_t CONFIG_MAX_FILE_SIZE = 2000;
 const size_t JSON_CAPACITY = JSON_OBJECT_SIZE(2) + CONFIG_MAX_FILE_SIZE;
+
+
+// Time Settings
+#define TIME_SERVER "pool.ntp.org"
+#define DAYLIGHT_SAVINGS_OFFSET 3600
+
+// Module Config Settings
+#define MODULE_CONFIG_FILE_PATH "/module_config.json"
+
 
 #define DEBUG
 #ifdef DEBUG
@@ -37,11 +47,11 @@ public:
 	static void AddNetwork(const char* ssid, const char* password);
 	static std::vector<Network> GetNetworks() { return networks; }
 	static const char* GetName() { return name; }
-	static int16_t GetTimezoneOffset() { return timezone_offset; }
+	static int32_t GetTimezoneOffset() { return timezone_offset; }
 	static void SetupModule(const char* raw_config);
 private:
 	static char name[100];
-	static int16_t timezone_offset;
+	static int32_t timezone_offset;
 	static std::vector<Network> networks;
 };
 

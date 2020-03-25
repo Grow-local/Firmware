@@ -4,7 +4,7 @@
  * File Created: Wednesday, 20th November 2019 9:35:52
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 14:56:35
+ * Last Modified: Wednesday March 25th 2020 11:58:45
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -13,14 +13,14 @@
 #include "restserver.h"
 
 RestServer::RestServer(AsyncWebServer *server) {
-	timeClient = new NTPClient(ntpUDP);
+	scheduler = new Scheduler();
 
-	timeClient->begin();
-	timeClient->setTimeOffset(ModuleConfig::GetTimezoneOffset());
-
-	server->on("/module/info", HTTP_GET, [](AsyncWebServerRequest *request) {
-		char json[500] = "";
-		sprintf(json, "{\"moduleName\": \"%s\", \"ipAddress\": \"%s\"}", WiFi.macAddress().c_str(), WiFi.localIP().toString().c_str());
+	module_service = new ModuleService();
+	plant_service = new PlantService(scheduler);
+	
+	server->on("/module/info", HTTP_GET, [this](AsyncWebServerRequest *request) {
+		char json[1000] = "";
+		this->GetModuleService()->GetModuleInfo(json);
 		request->send(200, "application/json", json);
 	});
 
@@ -32,4 +32,10 @@ RestServer::RestServer(AsyncWebServer *server) {
 		delay(1000);
 		ESP.restart();
 	});
+
+	server->on("/plant/info", HTTP_GET, [this](AsyncWebServerRequest *request) {
+		char json[1000] = "";
+		this->GetPlantService()->GetPlantInfo(json);
+		request->send(200, "application/json", json);
+	}); 
 }
