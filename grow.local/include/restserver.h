@@ -4,7 +4,7 @@
  * File Created: Wednesday, 20th November 2019 9:35:52
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Wednesday March 25th 2020 12:42:10
+ * Last Modified: Wednesday March 25th 2020 15:56:52
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -17,7 +17,7 @@
 #define _TASK_OO_CALLBACKS
 
 #include <ESPAsyncWebServer.h>
-#include <TaskScheduler.h>
+#include <TaskSchedulerDeclarations.h>
 
 #include "config.h"
 #include "moduleservice.h"
@@ -28,7 +28,7 @@ public:
 	ModuleService* GetModuleService() { return module_service; }
 	PlantService* GetPlantService() { return plant_service; }
 	
-	RestServer(AsyncWebServer *server);
+	RestServer(AsyncWebServer *server, Scheduler *scheduler);
 	~RestServer();
 private:
 	Scheduler *scheduler;

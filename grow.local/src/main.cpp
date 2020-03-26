@@ -4,13 +4,16 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Tuesday March 24th 2020 16:13:08
+ * Last Modified: Thursday March 26th 2020 12:36:39
  * Modified By: Caroline
  * -----
  * License: MIT License
  */
 
 #ifndef UNIT_TEST
+
+#define _TASK_TIMEOUT
+#define _TASK_OO_CALLBACKS
 
 #include <ArduinoJson.h>
 #include <ESPAsyncWebServer.h>
@@ -19,6 +22,7 @@
 #include <vector>
 #include <ArduinoOTA.h>
 #include <time.h>
+#include <TaskScheduler.h>
 
 #include "config.h"
 #include "restserver.h"
@@ -26,6 +30,7 @@
 
 AsyncWebServer *Server = new AsyncWebServer(80);
 
+Scheduler *scheduler;
 ScanWifiServer *scanWifi;
 RestServer *restServer;
 
@@ -55,7 +60,8 @@ void setup() {
 #ifdef DEBUG
 			Serial.printf("Connected as %s.local\n", ModuleConfig::GetName());
 #endif
-			configTime(ModuleConfig::GetTimezoneOffset(), DAYLIGHT_SAVINGS_OFFSET, TIME_SERVER);
+			configTzTime("GMT+5:00", TIME_SERVER);
+			//configTime(-ModuleConfig::GetTimezoneOffset(), DAYLIGHT_SAVINGS_OFFSET, TIME_SERVER);
 			
 			ArduinoOTA.onStart([]() {
 				char type[100] = "";
@@ -81,7 +87,8 @@ void setup() {
 
 			ArduinoOTA.begin();
 
-			restServer = new RestServer(Server);
+			scheduler = new Scheduler();
+			restServer = new RestServer(Server, scheduler);
 
 			Server->begin();
 
@@ -105,7 +112,10 @@ void setup() {
 }
 
 void loop() {
-	if (WiFi.getMode() != WIFI_AP) ArduinoOTA.handle();
+	if (WiFi.getMode() != WIFI_AP) {
+		ArduinoOTA.handle();
+		scheduler->execute();
+	}
 }
 
 #endif

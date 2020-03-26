@@ -4,7 +4,7 @@
  * File Created: Wednesday, 20th November 2019 9:35:52
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Wednesday March 25th 2020 11:58:45
+ * Last Modified: Wednesday March 25th 2020 19:21:42
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -12,8 +12,8 @@
 
 #include "restserver.h"
 
-RestServer::RestServer(AsyncWebServer *server) {
-	scheduler = new Scheduler();
+RestServer::RestServer(AsyncWebServer *server, Scheduler *scheduler) {
+	this->scheduler = scheduler;
 
 	module_service = new ModuleService();
 	plant_service = new PlantService(scheduler);
@@ -34,7 +34,7 @@ RestServer::RestServer(AsyncWebServer *server) {
 	});
 
 	server->on("/plant/info", HTTP_GET, [this](AsyncWebServerRequest *request) {
-		char json[1000] = "";
+		char json[5000] = "";
 		this->GetPlantService()->GetPlantInfo(json);
 		request->send(200, "application/json", json);
 	}); 
