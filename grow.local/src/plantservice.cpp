@@ -4,7 +4,7 @@
  * File Created: Tuesday, 24th March 2020 18:29:29
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Wednesday March 25th 2020 11:33:57
+ * Last Modified: Thursday March 26th 2020 10:14:34
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -18,19 +18,22 @@ bool PlantService::Callback() {
 }
 
 void PlantService::CheckSensors() {
-	do {
-		temperature = am2320->readTemperature();
-	} while (isnan(temperature));
+	struct tm timeinfo;
+	char timestamp[TIMESTAMP_LENGTH] = "";
+	getLocalTime(&timeinfo);
+	strftime(timestamp, TIMESTAMP_LENGTH, "%H:%M:%S", &timeinfo);
+	Serial.printf("Reading plant sensors at %2.d:%02d:%02d...\n", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
+	this->ambient_sensor->RecordData(timestamp);
 }
 
 void PlantService::GetPlantInfo(char* info) {
-	sprintf(info, "{\"ambientTemperature\": \"%.1f\", \"humidity\": \"%.1f\"}", temperature, humidity);
+	char ambient_history_string[3200] = "";
+	this->ambient_sensor->DataToJSONArray(ambient_history_string);
+	snprintf(info, 5000, "{%s}", ambient_history_string);
 }
 
 PlantService::PlantService(Scheduler* scheduler) : Task(10*TASK_MINUTE, TASK_FOREVER, scheduler, true) {
-	this->am2320 = new Adafruit_AM2320();
-	this->temperature = 0;
-	this->humidity = 0;
+	this->ambient_sensor = new AmbientSensor();
 
-	this->am2320->begin();
+	this->ambient_sensor->begin();
 }

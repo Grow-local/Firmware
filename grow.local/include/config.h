@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Tuesday March 24th 2020 18:43:31
+ * Last Modified: Thursday March 26th 2020 10:14:11
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -25,6 +25,7 @@ const size_t JSON_CAPACITY = JSON_OBJECT_SIZE(2) + CONFIG_MAX_FILE_SIZE;
 // Time Settings
 #define TIME_SERVER "pool.ntp.org"
 #define DAYLIGHT_SAVINGS_OFFSET 3600
+#define TIMESTAMP_LENGTH 9
 
 // Module Config Settings
 #define MODULE_CONFIG_FILE_PATH "/module_config.json"
