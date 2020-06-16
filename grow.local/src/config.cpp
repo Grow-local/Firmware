@@ -4,7 +4,7 @@
  * File Created: Friday, 20th March 2020 10:56:27
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Tuesday March 24th 2020 15:33:49
+ * Last Modified: Friday March 27th 2020 19:36:06
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -77,11 +77,16 @@ void ModuleConfig::AddNetwork(const char* ssid, const char* password) {
 	ModuleConfig::WriteConfigToFile();
 }
 
-void ModuleConfig::SetupModule(const char *raw_config) {
+void ModuleConfig::SetupModule(const char* raw_config) {
 	DynamicJsonDocument json_config(JSON_CAPACITY);
 	deserializeJson(json_config, raw_config);
 	timezone_offset = json_config["timezoneOffset"];
-	timezone_offset *= 3600;
+	timezone_offset *= 60; // Offset from node.js is in minutes, we need seconds
 	strcpy(name, json_config["name"]);
 	ModuleConfig::WriteConfigToFile();
+}
+
+void PlantConfig::SetupPlant(const char* raw_config) {
+	DynamicJsonDocument json_config(JSON_CAPACITY);
+	deserializeJson(json_config, raw_config);
 }

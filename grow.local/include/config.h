@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Thursday March 26th 2020 10:14:11
+ * Last Modified: Monday June 15th 2020 21:59:50
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -17,6 +17,7 @@
 #include <SPIFFS.h>
 #include <vector>
 #include <time.h>
+#include <TaskSchedulerDeclarations.h>
 
 const size_t CONFIG_MAX_FILE_SIZE = 2000;
 const size_t JSON_CAPACITY = JSON_OBJECT_SIZE(2) + CONFIG_MAX_FILE_SIZE;
@@ -24,11 +25,20 @@ const size_t JSON_CAPACITY = JSON_OBJECT_SIZE(2) + CONFIG_MAX_FILE_SIZE;
 
 // Time Settings
 #define TIME_SERVER "pool.ntp.org"
-#define DAYLIGHT_SAVINGS_OFFSET 3600
-#define TIMESTAMP_LENGTH 9
+#define DAYLIGHT_SAVINGS_OFFSET 0 //3600
+#define TIMESTAMP_LENGTH 20
 
 // Module Config Settings
 #define MODULE_CONFIG_FILE_PATH "/module_config.json"
+
+// Data Collection Settings
+#define CHECK_SENSOR_PERIOD_MINUTES 10
+#define DATA_MAX_AGE_HOURS 12
+
+// Data Collection Math
+#define CHECK_SENSOR_PERIOD (CHECK_SENSOR_PERIOD_MINUTES*TASK_MINUTE)
+#define DATA_MAX_AGE (DATA_MAX_AGE_HOURS*TASK_HOUR)
+#define DATA_MAX_SIZE DATA_MAX_AGE/CHECK_SENSOR_PERIOD
 
 
 #define DEBUG
@@ -58,6 +68,9 @@ private:
 
 class PlantConfig {
 public:
+	static const char* GetName() { return name; }
+	static void SetupPlant(const char* raw_config);
+private:
 	static char name[100];
 };
 

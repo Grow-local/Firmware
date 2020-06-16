@@ -4,7 +4,7 @@
  * File Created: Tuesday, 24th March 2020 18:20:52
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Thursday March 26th 2020 9:33:39
+ * Last Modified: Thursday April 9th 2020 16:00:49
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -23,18 +23,21 @@
 
 #include "config.h"
 #include "ambientsensor.h"
+#include "stemmasensor.h"
 
 class PlantService : public Task {
 public:
 	bool Callback();
 
 	void CheckSensors();
-	void GetPlantInfo(char* info);
+	void SaveToFile();
+	void ReadFromFile();
 
 	PlantService(Scheduler* scheduler);
 	~PlantService() {};
 private:
 	AmbientSensor* ambient_sensor;
+	StemmaSensor* soil_sensor;
 };
 
 #endif

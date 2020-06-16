@@ -4,7 +4,7 @@
  * File Created: Tuesday, 24th March 2020 18:29:29
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Thursday March 26th 2020 10:14:34
+ * Last Modified: Monday June 15th 2020 22:31:18
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -14,26 +14,53 @@
 
 bool PlantService::Callback() {
 	CheckSensors();
+	SaveToFile();
 	return true;
 }
 
 void PlantService::CheckSensors() {
 	struct tm timeinfo;
-	char timestamp[TIMESTAMP_LENGTH] = "";
 	getLocalTime(&timeinfo);
-	strftime(timestamp, TIMESTAMP_LENGTH, "%H:%M:%S", &timeinfo);
-	Serial.printf("Reading plant sensors at %2.d:%02d:%02d...\n", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-	this->ambient_sensor->RecordData(timestamp);
+#ifdef DEBUG
+	Serial.println(&timeinfo, "Reading plant sensors at %FT%T...");
+#endif
+	this->ambient_sensor->RecordData(&timeinfo);
+	//this->soil_sensor->RecordData(&timeinfo);
 }
 
-void PlantService::GetPlantInfo(char* info) {
-	char ambient_history_string[3200] = "";
-	this->ambient_sensor->DataToJSONArray(ambient_history_string);
-	snprintf(info, 5000, "{%s}", ambient_history_string);
+void PlantService::SaveToFile() {
+	File file = SPIFFS.open("/data.json", FILE_WRITE);
+	if (!file) {
+#ifdef DEBUG
+		Serial.println("Failed to open data file for writing");
+#endif
+		return;
+	}
+	file.print("{");
+	this->ambient_sensor->SaveToFile(&file);
+	//this->soil_sensor->SaveToFile(&file);
+	file.print("}");
+	file.close();
 }
 
-PlantService::PlantService(Scheduler* scheduler) : Task(10*TASK_MINUTE, TASK_FOREVER, scheduler, true) {
+void PlantService::ReadFromFile() {
+	File file = SPIFFS.open("/data.json", "r");
+	if (!file) {
+#ifdef DEBUG
+		Serial.println("Failed to open data file for reading");
+#endif
+		return;
+	}
+	this->ambient_sensor->ReadFromFile(&file);
+	//this->soil_sensor->ReadFromFile(&file);
+	file.close();
+}
+
+PlantService::PlantService(Scheduler* scheduler) : Task(CHECK_SENSOR_PERIOD, TASK_FOREVER, scheduler, true) {
 	this->ambient_sensor = new AmbientSensor();
+	//this->soil_sensor = new StemmaSensor();
 
 	this->ambient_sensor->begin();
+
+	ReadFromFile();
 }

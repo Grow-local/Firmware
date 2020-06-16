@@ -4,7 +4,7 @@
  * File Created: Wednesday, 20th November 2019 9:35:52
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Saturday March 21st 2020 14:16:13
+ * Last Modified: Thursday March 26th 2020 20:43:25
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -15,15 +15,7 @@
 ScanWifiServer::ScanWifiServer(AsyncWebServer *server) {
 	WiFi.softAP("grow.local module");
 
-	server->serveStatic("/", SPIFFS, "/www/");
-
-	server->on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-		File file = SPIFFS.open("/www/index.html", "r");
-		AsyncWebServerResponse *response =
-			request->beginResponse(200, "text/html", file.readStringUntil(EOF));
-		response->addHeader("Connection", "close");
-		request->send(response);
-	});
+	server->serveStatic("/", SPIFFS, "/www/").setCacheControl("max-age=600").setDefaultFile("index.html");
 
 	server->on("/scan", HTTP_GET, [](AsyncWebServerRequest *request) {
 		String json = "[";

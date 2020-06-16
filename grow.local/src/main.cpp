@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Thursday March 26th 2020 12:36:39
+ * Last Modified: Friday March 27th 2020 19:22:44
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -34,6 +34,8 @@ Scheduler *scheduler;
 ScanWifiServer *scanWifi;
 RestServer *restServer;
 
+bool connected = false;
+
 void setup() {
 #ifdef DEBUG
 	Serial.begin(BAUDRATE);
@@ -60,8 +62,9 @@ void setup() {
 #ifdef DEBUG
 			Serial.printf("Connected as %s.local\n", ModuleConfig::GetName());
 #endif
-			configTzTime("GMT+5:00", TIME_SERVER);
-			//configTime(-ModuleConfig::GetTimezoneOffset(), DAYLIGHT_SAVINGS_OFFSET, TIME_SERVER);
+			connected = true;
+			//configTzTime("GMT+5:00", TIME_SERVER);
+			configTime(-ModuleConfig::GetTimezoneOffset(), DAYLIGHT_SAVINGS_OFFSET, TIME_SERVER);
 			
 			ArduinoOTA.onStart([]() {
 				char type[100] = "";
@@ -94,13 +97,14 @@ void setup() {
 
 			MDNS.begin(ModuleConfig::GetName());
 			MDNS.addService("http", "tcp", 80);
-		} else WiFi.mode(WIFI_AP);
-	} else WiFi.mode(WIFI_AP);
+		}
+	}
 
-	if (WiFi.getMode() == WIFI_AP) {
+	if (!connected) {
 #ifdef DEBUG
 		Serial.println("Starting ScanWifiServer");
 #endif
+		WiFi.mode(WIFI_AP);
 
 		scanWifi = new ScanWifiServer(Server);
 
@@ -112,7 +116,7 @@ void setup() {
 }
 
 void loop() {
-	if (WiFi.getMode() != WIFI_AP) {
+	if (connected) {
 		ArduinoOTA.handle();
 		scheduler->execute();
 	}

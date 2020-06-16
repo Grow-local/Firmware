@@ -4,7 +4,7 @@
  * File Created: Wednesday, 20th November 2019 9:35:52
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Wednesday March 25th 2020 15:56:52
+ * Last Modified: Thursday March 26th 2020 14:25:13
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -18,6 +18,7 @@
 
 #include <ESPAsyncWebServer.h>
 #include <TaskSchedulerDeclarations.h>
+#include <SPIFFS.h>
 
 #include "config.h"
 #include "moduleservice.h"
