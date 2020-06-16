@@ -4,7 +4,7 @@
  * File Created: Wednesday, 20th November 2019 9:35:52
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Thursday March 26th 2020 14:25:13
+ * Last Modified: Tuesday June 16th 2020 0:01:05
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -22,7 +22,7 @@
 
 #include "config.h"
 #include "moduleservice.h"
-#include "plantservice.h"
+#include "plant/plant_service.h"
 
 class RestServer {
 public:

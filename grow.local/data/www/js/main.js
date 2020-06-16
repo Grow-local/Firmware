@@ -8,22 +8,22 @@ var app = new Vue({
 		submitted: false
 	},
 	methods: {
-		getNetworks: function () {
+		getNetworks() {
 			this.loading = true;
-			axios.get("http://grow.local/scan").then(response => {
+			axios.get("http://grow.local/scan").then((response) => {
 				this.networks = response.data;
 			}).finally(() => {
 				this.loading = false;
 			});
 		},
-		joinNetwork: function () {
+		joinNetwork() {
 			this.submitted = true;
 			axios.post("http://grow.local/join", { ssid: this.selectedNetwork.ssid, password: this.password }).then(() => {
-				
+
 			});
 		}
 	},
 	mounted() {
 		this.getNetworks();
 	},
-})
+});

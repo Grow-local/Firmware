@@ -4,14 +4,14 @@
  * File Created: Tuesday, 24th March 2020 18:20:52
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Thursday April 9th 2020 16:00:49
+ * Last Modified: Tuesday June 16th 2020 10:00:10
  * Modified By: Caroline
  * -----
  * License: MIT License
  */
 
-#ifndef PLANTSERVICE_H
-#define PLANTSERVICE_H
+#ifndef PLANT_SERVICE_H
+#define PLANT_SERVICE_H
 
 #define _TASK_TIMEOUT 
 #define _TASK_OO_CALLBACKS
@@ -22,8 +22,9 @@
 #include <time.h>
 
 #include "config.h"
-#include "ambientsensor.h"
-#include "stemmasensor.h"
+#include "plant/sensors/ambient_temperature_sensor.h"
+#include "plant/sensors/ambient_humidity_sensor.h"
+#include "plant/sensors/stemma_sensor.h"
 
 class PlantService : public Task {
 public:
@@ -36,8 +37,8 @@ public:
 	PlantService(Scheduler* scheduler);
 	~PlantService() {};
 private:
-	AmbientSensor* ambient_sensor;
-	StemmaSensor* soil_sensor;
+	AmbientTemperatureSensor* ambient_temperature_sensor;
+	AmbientHumiditySensor* ambient_humidity_sensor;
 };
 
 #endif

@@ -4,7 +4,7 @@
  * File Created: Wednesday, 8th April 2020 12:35:31
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Wednesday April 8th 2020 12:56:59
+ * Last Modified: Tuesday June 16th 2020 10:24:49
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -19,13 +19,8 @@
 
 class StemmaSensor : public Sensor, public Adafruit_seesaw {
 public:
-	void RecordData(struct tm* timestamp);
-	void SaveToFile(File* file);
-	void ReadFromFile(File* file);
-
 	StemmaSensor();
-private:
-	std::vector<SensorData> moisture_history;
+	float ReadData() override;
 };
 
 #endif

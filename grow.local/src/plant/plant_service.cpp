@@ -4,13 +4,13 @@
  * File Created: Tuesday, 24th March 2020 18:29:29
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Monday June 15th 2020 22:31:18
+ * Last Modified: Tuesday June 16th 2020 0:41:52
  * Modified By: Caroline
  * -----
  * License: MIT License
  */
 
-#include "plantservice.h"
+#include "plant/plant_service.h"
 
 bool PlantService::Callback() {
 	CheckSensors();
@@ -24,8 +24,8 @@ void PlantService::CheckSensors() {
 #ifdef DEBUG
 	Serial.println(&timeinfo, "Reading plant sensors at %FT%T...");
 #endif
-	this->ambient_sensor->RecordData(&timeinfo);
-	//this->soil_sensor->RecordData(&timeinfo);
+	this->ambient_temperature_sensor->RecordData(&timeinfo);
+	this->ambient_humidity_sensor->RecordData(&timeinfo);
 }
 
 void PlantService::SaveToFile() {
@@ -37,8 +37,9 @@ void PlantService::SaveToFile() {
 		return;
 	}
 	file.print("{");
-	this->ambient_sensor->SaveToFile(&file);
-	//this->soil_sensor->SaveToFile(&file);
+	this->ambient_temperature_sensor->SaveToFile(&file);
+	file.print(",");
+	this->ambient_humidity_sensor->SaveToFile(&file);
 	file.print("}");
 	file.close();
 }
@@ -51,16 +52,20 @@ void PlantService::ReadFromFile() {
 #endif
 		return;
 	}
-	this->ambient_sensor->ReadFromFile(&file);
-	//this->soil_sensor->ReadFromFile(&file);
+
+	this->ambient_temperature_sensor->ReadFromFile(&file);
+	file = SPIFFS.open("/data.json", "r");
+	this->ambient_humidity_sensor->ReadFromFile(&file);
 	file.close();
 }
 
-PlantService::PlantService(Scheduler* scheduler) : Task(CHECK_SENSOR_PERIOD, TASK_FOREVER, scheduler, true) {
-	this->ambient_sensor = new AmbientSensor();
-	//this->soil_sensor = new StemmaSensor();
+PlantService::PlantService(Scheduler *scheduler)
+	: Task(CHECK_SENSOR_PERIOD, TASK_FOREVER, scheduler, true) {
+	this->ambient_temperature_sensor = new AmbientTemperatureSensor();
+	this->ambient_humidity_sensor = new AmbientHumiditySensor();
 
-	this->ambient_sensor->begin();
+	this->ambient_temperature_sensor->begin();
+	this->ambient_humidity_sensor->begin();
 
 	ReadFromFile();
 }
