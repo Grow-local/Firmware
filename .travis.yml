@@ -33,7 +33,6 @@ branches:
   - master
   - dev
 
-sudo: false
 cache:
     directories:
         - "~/.platformio"
