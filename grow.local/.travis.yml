@@ -28,6 +28,11 @@ language: python
 python:
     - "2.7"
 
+branches:
+  only:
+  - master
+  - dev
+
 sudo: false
 cache:
     directories:
