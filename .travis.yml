@@ -6,6 +6,7 @@ branches:
   only:
   - master
   - dev
+  - /^v.*$/
 
 cache:
     directories:
