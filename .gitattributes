@@ -1,0 +1,5 @@
+bootstrap.min.css -linguist-vendored
+axios.min.js -linguist-vendored
+jquery.slim.min.js -linguist-vendored
+bootstrap.min.js -linguist-vendored
+vue.js -linguist-vendored
