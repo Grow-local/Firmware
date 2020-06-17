@@ -28,5 +28,5 @@ deploy:
 		- ".pio/build/huzzah/firmware.elf"
         - ".pio/build/huzzah/firmware.bin"
     on:
-        repo: curieos/Grow.local-esp
-    skip_cleanup: 'true'
+        tags: true
+    skip_cleanup: true
