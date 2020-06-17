@@ -42,7 +42,6 @@ install:
     - platformio update
 
 script:
-    - platformio test
     - platformio run
 
 
