@@ -17,6 +17,7 @@ install:
     - platformio update
 
 script:
+    - platformio check
     - platformio run
 
 deploy:
