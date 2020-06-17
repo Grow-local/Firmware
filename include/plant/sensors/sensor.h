@@ -4,14 +4,14 @@
  * File Created: Thursday, 26th March 2020 9:14:45
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Tuesday June 16th 2020 10:21:11
+ * Last Modified: Wednesday June 17th 2020 10:10:15
  * Modified By: Caroline
  * -----
  * License: MIT License
  */
 
-#ifndef SENSOR_H
-#define SENSOR_H
+#ifndef PLANT_SENSORS_SENSOR_H
+#define PLANT_SENSORS_SENSOR_H
 
 #include <ArduinoJson.h>
 #include <time.h>

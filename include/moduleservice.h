@@ -4,7 +4,7 @@
  * File Created: Tuesday, 24th March 2020 18:05:04
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Wednesday March 25th 2020 11:58:37
+ * Last Modified: Wednesday June 17th 2020 9:35:24
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -21,12 +21,13 @@
 #include "config.h"
 
 class ModuleService {
-public:
-	void GetModuleInfo(char* info);
+  public:
+	void GetModuleInfo(char *info);
 
 	ModuleService();
 	~ModuleService();
-private:
+
+  private:
 };
 
 #endif

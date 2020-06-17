@@ -4,7 +4,7 @@
  * File Created: Friday, 20th March 2020 10:56:27
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Friday March 27th 2020 19:36:06
+ * Last Modified: Wednesday June 17th 2020 10:14:08
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -28,20 +28,25 @@ void ModuleConfig::ReadConfigFromFile() {
 	DynamicJsonDocument json_config(JSON_CAPACITY);
 	auto raw_config = file.readString();
 	deserializeJson(json_config, raw_config);
-	try { strcpy(name, json_config["moduleName"]); }
-	catch(int e) { strcpy(name, ""); }
+	try {
+		strcpy(name, json_config["moduleName"]);
+	} catch (int e) {
+		strcpy(name, "");
+	}
 	timezone_offset = json_config["timezoneOffset"];
 
 	JsonArray networks_json = json_config["networks"];
-	for(auto network : networks_json) {
+	for (auto network : networks_json) {
 		struct Network newNetwork;
 		try {
 			strcpy(newNetwork.ssid, network["ssid"]);
 			strcpy(newNetwork.password, network["password"]);
-		} catch(int e) { break; }
+		} catch (int e) {
+			break;
+		}
 		networks.push_back(newNetwork);
 	}
-	
+
 	file.close();
 }
 
@@ -55,21 +60,26 @@ void ModuleConfig::WriteConfigToFile() {
 	}
 
 	char networks_string[1000] = "[";
-	for (std::vector<Network>::iterator iter = networks.begin(); iter < networks.end(); iter++) {
+	for (std::vector<Network>::iterator iter = networks.begin();
+		 iter < networks.end(); ++iter) {
 		char network_string[200] = "";
-		sprintf(network_string, "{\"ssid\": \"%s\", \"password\": \"%s\"}", iter->ssid, iter->password);
+		sprintf(network_string, "{\"ssid\": \"%s\", \"password\": \"%s\"}",
+				iter->ssid, iter->password);
 		strcat(networks_string, network_string);
 		if (iter != networks.end()) strcat(network_string, ",");
 	}
 
 	char config_str[CONFIG_MAX_FILE_SIZE] = "";
-	sprintf(config_str, "{\"moduleName\": \"%s\", \"timezoneOffset\": \"%d\", \"networks\": %s}", name, timezone_offset, networks_string);
+	sprintf(config_str,
+			"{\"moduleName\": \"%s\", \"timezoneOffset\": \"%d\", "
+			"\"networks\": %s}",
+			name, timezone_offset, networks_string);
 	file.print(config_str);
 
 	file.close();
 }
 
-void ModuleConfig::AddNetwork(const char* ssid, const char* password) {
+void ModuleConfig::AddNetwork(const char *ssid, const char *password) {
 	struct Network newNetwork;
 	strcpy(newNetwork.ssid, ssid);
 	strcpy(newNetwork.password, password);
@@ -77,7 +87,7 @@ void ModuleConfig::AddNetwork(const char* ssid, const char* password) {
 	ModuleConfig::WriteConfigToFile();
 }
 
-void ModuleConfig::SetupModule(const char* raw_config) {
+void ModuleConfig::SetupModule(const char *raw_config) {
 	DynamicJsonDocument json_config(JSON_CAPACITY);
 	deserializeJson(json_config, raw_config);
 	timezone_offset = json_config["timezoneOffset"];
@@ -86,7 +96,7 @@ void ModuleConfig::SetupModule(const char* raw_config) {
 	ModuleConfig::WriteConfigToFile();
 }
 
-void PlantConfig::SetupPlant(const char* raw_config) {
+void PlantConfig::SetupPlant(const char *raw_config) {
 	DynamicJsonDocument json_config(JSON_CAPACITY);
 	deserializeJson(json_config, raw_config);
 }

@@ -4,14 +4,14 @@
  * File Created: Wednesday, 8th April 2020 12:35:31
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Tuesday June 16th 2020 10:24:49
+ * Last Modified: Wednesday June 17th 2020 10:12:58
  * Modified By: Caroline
  * -----
  * License: MIT License
  */
 
-#ifndef STEMMA_SENSOR_H
-#define STEMMA_SENSOR_H
+#ifndef PLANT_SENSORS_STEMMA_SENSOR_H
+#define PLANT_SENSORS_STEMMA_SENSOR_H
 
 #include <seesaw.h>
 
