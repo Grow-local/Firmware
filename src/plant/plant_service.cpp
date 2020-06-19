@@ -4,7 +4,7 @@
  * File Created: Tuesday, 24th March 2020 18:29:29
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Tuesday June 16th 2020 0:41:52
+ * Last Modified: Thursday June 18th 2020 14:55:55
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -53,9 +53,11 @@ void PlantService::ReadFromFile() {
 		return;
 	}
 
-	this->ambient_temperature_sensor->ReadFromFile(&file);
-	file = SPIFFS.open("/data.json", "r");
-	this->ambient_humidity_sensor->ReadFromFile(&file);
+	DynamicJsonDocument json(20000);
+	deserializeJson(json, file);
+
+	this->ambient_temperature_sensor->ReadFromJSON(&json);
+	this->ambient_humidity_sensor->ReadFromJSON(&json);
 	file.close();
 }
 
