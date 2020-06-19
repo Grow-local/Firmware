@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Wednesday June 17th 2020 10:15:43
+ * Last Modified: Friday June 19th 2020 14:57:31
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -39,7 +39,6 @@ const size_t JSON_CAPACITY = JSON_OBJECT_SIZE(2) + CONFIG_MAX_FILE_SIZE;
 #define DATA_MAX_AGE (DATA_MAX_AGE_HOURS * TASK_HOUR)
 #define DATA_MAX_SIZE (DATA_MAX_AGE / CHECK_SENSOR_PERIOD)
 
-#define DEBUG
 #ifdef DEBUG
 #define BAUDRATE 115200
 #endif
