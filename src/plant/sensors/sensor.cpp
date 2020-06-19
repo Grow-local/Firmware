@@ -4,7 +4,7 @@
  * File Created: Monday, 15th June 2020 23:36:44
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Tuesday June 16th 2020 10:21:13
+ * Last Modified: Thursday June 18th 2020 15:05:05
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -35,10 +35,8 @@ void Sensor::SaveToFile(File* file) {
 	file->print("]");
 }
 
-void Sensor::ReadFromFile(File* file) {
-	DynamicJsonDocument json(20000);	
-	deserializeJson(json, *file);
-	JsonArray json_data = json[this->label];
+void Sensor::ReadFromJSON(DynamicJsonDocument* json) {
+	JsonArray json_data = (*json)[this->label];
 	for (auto json_point : json_data) {
 		struct SensorData data_point;
 		data_point.value = json_point["value"];

@@ -4,7 +4,7 @@
  * File Created: Tuesday, 19th November 2019 17:04:12
  * Author: Caroline (caroline@curieos.com)
  * -----
- * Last Modified: Friday March 27th 2020 19:22:44
+ * Last Modified: Wednesday June 17th 2020 10:09:18
  * Modified By: Caroline
  * -----
  * License: MIT License
@@ -16,13 +16,13 @@
 #define _TASK_OO_CALLBACKS
 
 #include <ArduinoJson.h>
+#include <ArduinoOTA.h>
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
 #include <SPIFFS.h>
-#include <vector>
-#include <ArduinoOTA.h>
-#include <time.h>
 #include <TaskScheduler.h>
+#include <ctime>
+#include <vector>
 
 #include "config.h"
 #include "restserver.h"
@@ -63,30 +63,37 @@ void setup() {
 			Serial.printf("Connected as %s.local\n", ModuleConfig::GetName());
 #endif
 			connected = true;
-			//configTzTime("GMT+5:00", TIME_SERVER);
-			configTime(-ModuleConfig::GetTimezoneOffset(), DAYLIGHT_SAVINGS_OFFSET, TIME_SERVER);
-			
-			ArduinoOTA.onStart([]() {
-				char type[100] = "";
-				if (ArduinoOTA.getCommand() == U_FLASH) strcat(type, "sketch");
-				else {
-					strcat(type, "filesystem");
-					SPIFFS.end();
-				}
-#ifdef DEBUG
-				Serial.printf("Updating %s\n", type);
-#endif
-			}).onEnd([]() {
-#ifdef DEBUG
-				Serial.println("\nEnd");
-#endif
-			}).onProgress([](unsigned int progress, unsigned int total) {
-#ifdef DEBUG
-				Serial.printf("Progress: %u%%\n", (progress / (total / 100)));
-#endif
-			}).onError([](ota_error_t error) {
+			// configTzTime("GMT+5:00", TIME_SERVER);
+			configTime(-ModuleConfig::GetTimezoneOffset(),
+					   DAYLIGHT_SAVINGS_OFFSET, TIME_SERVER);
 
-			});
+			ArduinoOTA
+				.onStart([]() {
+					char type[100] = "";
+					if (ArduinoOTA.getCommand() == U_FLASH)
+						strcat(type, "sketch");
+					else {
+						strcat(type, "filesystem");
+						SPIFFS.end();
+					}
+#ifdef DEBUG
+					Serial.printf("Updating %s\n", type);
+#endif
+				})
+				.onEnd([]() {
+#ifdef DEBUG
+					Serial.println("\nEnd");
+#endif
+				})
+				.onProgress([](unsigned int progress, unsigned int total) {
+#ifdef DEBUG
+					Serial.printf("Progress: %u%%\n",
+								  (progress / (total / 100)));
+#endif
+				})
+				.onError([](ota_error_t error) {
+
+				});
 
 			ArduinoOTA.begin();
 
