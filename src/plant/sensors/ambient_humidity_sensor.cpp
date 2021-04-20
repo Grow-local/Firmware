@@ -12,6 +12,4 @@
 
 #include "plant/sensors/ambient_humidity_sensor.h"
 
-float AmbientHumiditySensor::ReadData() {
-	return this->readHumidity();
-}
+float AmbientHumiditySensor::ReadData() { return this->readHumidity(); }

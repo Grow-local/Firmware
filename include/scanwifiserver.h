@@ -21,11 +21,11 @@
 #include "config.h"
 
 class ScanWifiServer {
-  public:
-	ScanWifiServer(AsyncWebServer *server);
-	~ScanWifiServer();
+   public:
+    ScanWifiServer(AsyncWebServer *server);
+    ~ScanWifiServer();
 
-  private:
+   private:
 };
 
 #endif

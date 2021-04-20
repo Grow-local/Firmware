@@ -11,10 +11,12 @@
  */
 
 #include "moduleservice.h"
+
 void ModuleService::GetModuleInfo(char* info) {
-	sprintf(info, "{\"moduleName\": \"%s\", \"ipAddress\": \"%s\", \"version\": \"%s\"}", WiFi.macAddress().c_str(), WiFi.localIP().toString().c_str(), VERSION);
+    sprintf(
+	info,
+	"{\"moduleName\": \"%s\", \"ipAddress\": \"%s\", \"version\": \"%s\"}",
+	WiFi.macAddress().c_str(), WiFi.localIP().toString().c_str(), VERSION);
 }
 
-ModuleService::ModuleService() {
-	
-}
+ModuleService::ModuleService() {}

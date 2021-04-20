@@ -19,21 +19,21 @@
 #include "config.h"
 
 struct SensorData {
-	float value;
-	char timestamp[TIMESTAMP_LENGTH];
+    float value;
+    char timestamp[TIMESTAMP_LENGTH];
 };
 
 class Sensor {
-public:
-	Sensor(const char* label);
-	virtual void RecordData(struct tm* timestamp);
-	virtual void SaveToFile(File* file);
-	virtual void ReadFromJSON(DynamicJsonDocument* json);
-	virtual float ReadData() = 0;
-	
-protected:
-	std::vector<SensorData> data_history;
-	const char* label;
+   public:
+    Sensor(const char* label);
+    virtual void RecordData(struct tm* timestamp);
+    virtual void SaveToFile(File* file);
+    virtual void ReadFromJSON(DynamicJsonDocument* json);
+    virtual float ReadData() = 0;
+
+   protected:
+    std::vector<SensorData> data_history;
+    const char* label;
 };
 
 #endif

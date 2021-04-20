@@ -25,17 +25,17 @@
 #include "plant/plant_service.h"
 
 class RestServer {
-  public:
-	ModuleService *GetModuleService() { return module_service; }
-	PlantService *GetPlantService() { return plant_service; }
+   public:
+    ModuleService *GetModuleService() { return module_service; }
+    PlantService *GetPlantService() { return plant_service; }
 
-	RestServer(AsyncWebServer *server, Scheduler *scheduler);
-	~RestServer();
+    RestServer(AsyncWebServer *server, Scheduler *scheduler);
+    ~RestServer();
 
-  private:
-	Scheduler *scheduler;
-	ModuleService *module_service;
-	PlantService *plant_service;
+   private:
+    Scheduler *scheduler;
+    ModuleService *module_service;
+    PlantService *plant_service;
 };
 
 #endif

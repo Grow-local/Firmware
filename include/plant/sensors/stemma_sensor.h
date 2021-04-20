@@ -18,9 +18,9 @@
 #include "sensor.h"
 
 class StemmaSensor : public Sensor, public Adafruit_seesaw {
-public:
-	StemmaSensor();
-	float ReadData() override;
+   public:
+    StemmaSensor();
+    float ReadData() override;
 };
 
 #endif

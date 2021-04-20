@@ -12,10 +12,6 @@
 
 #include "plant/sensors/stemma_sensor.h"
 
-StemmaSensor::StemmaSensor() : Sensor("soilMoisture") {
-	this->begin(0x36);
-}
+StemmaSensor::StemmaSensor() : Sensor("soilMoisture") { this->begin(0x36); }
 
-float StemmaSensor::ReadData() {
-	return this->touchRead(0);
-}
+float StemmaSensor::ReadData() { return this->touchRead(0); }

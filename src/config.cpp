@@ -17,86 +17,87 @@ int32_t ModuleConfig::timezone_offset = 0;
 std::vector<Network> ModuleConfig::networks = {};
 
 void ModuleConfig::ReadConfigFromFile() {
-	File file = SPIFFS.open(MODULE_CONFIG_FILE_PATH);
-	if (!file) {
+    File file = SPIFFS.open(MODULE_CONFIG_FILE_PATH);
+    if (!file) {
 #ifdef DEBUG
-		Serial.println("Failed to open module config file for reading");
+	Serial.println("Failed to open module config file for reading");
 #endif
-		return;
-	}
+	return;
+    }
 
-	DynamicJsonDocument json_config(JSON_CAPACITY);
-	auto raw_config = file.readString();
-	deserializeJson(json_config, raw_config);
+    DynamicJsonDocument json_config(JSON_CAPACITY);
+    auto raw_config = file.readString();
+    deserializeJson(json_config, raw_config);
+    try {
+	strcpy(name, json_config["moduleName"]);
+    } catch (int e) {
+	strcpy(name, "");
+    }
+    timezone_offset = json_config["timezoneOffset"];
+
+    JsonArray networks_json = json_config["networks"];
+    for (auto network : networks_json) {
+	struct Network newNetwork;
 	try {
-		strcpy(name, json_config["moduleName"]);
+	    strcpy(newNetwork.ssid, network["ssid"]);
+	    strcpy(newNetwork.password, network["password"]);
 	} catch (int e) {
-		strcpy(name, "");
+	    break;
 	}
-	timezone_offset = json_config["timezoneOffset"];
+	networks.push_back(newNetwork);
+    }
 
-	JsonArray networks_json = json_config["networks"];
-	for (auto network : networks_json) {
-		struct Network newNetwork;
-		try {
-			strcpy(newNetwork.ssid, network["ssid"]);
-			strcpy(newNetwork.password, network["password"]);
-		} catch (int e) {
-			break;
-		}
-		networks.push_back(newNetwork);
-	}
-
-	file.close();
+    file.close();
 }
 
 void ModuleConfig::WriteConfigToFile() {
-	File file = SPIFFS.open(MODULE_CONFIG_FILE_PATH, FILE_WRITE);
-	if (!file) {
+    File file = SPIFFS.open(MODULE_CONFIG_FILE_PATH, FILE_WRITE);
+    if (!file) {
 #ifdef DEBUG
-		Serial.println("Failed to open module config file for writing");
+	Serial.println("Failed to open module config file for writing");
 #endif
-		return;
-	}
+	return;
+    }
 
-	char networks_string[1000] = "[";
-	for (std::vector<Network>::iterator iter = networks.begin();
-		 iter < networks.end(); ++iter) {
-		char network_string[200] = "";
-		sprintf(network_string, "{\"ssid\": \"%s\", \"password\": \"%s\"}",
-				iter->ssid, iter->password);
-		strcat(networks_string, network_string);
-		if (iter != networks.end()) strcat(network_string, ",");
-	}
+    char networks_string[1000] = "[";
+    for (std::vector<Network>::iterator iter = networks.begin();
+         iter < networks.end(); ++iter) {
+	char network_string[200] = "";
+	sprintf(network_string, "{\"ssid\": \"%s\", \"password\": \"%s\"}",
+	        iter->ssid, iter->password);
+	strcat(networks_string, network_string);
+	if (iter != networks.end()) strcat(network_string, ",");
+    }
 
-	char config_str[CONFIG_MAX_FILE_SIZE] = "";
-	sprintf(config_str,
-			"{\"moduleName\": \"%s\", \"timezoneOffset\": \"%d\", "
-			"\"networks\": %s}",
-			name, timezone_offset, networks_string);
-	file.print(config_str);
+    char config_str[CONFIG_MAX_FILE_SIZE] = "";
+    sprintf(config_str,
+            "{\"moduleName\": \"%s\", \"timezoneOffset\": \"%d\", "
+            "\"networks\": %s}",
+            name, timezone_offset, networks_string);
+    file.print(config_str);
 
-	file.close();
+    file.close();
 }
 
 void ModuleConfig::AddNetwork(const char *ssid, const char *password) {
-	struct Network newNetwork;
-	strcpy(newNetwork.ssid, ssid);
-	strcpy(newNetwork.password, password);
-	networks.push_back(newNetwork);
-	ModuleConfig::WriteConfigToFile();
+    struct Network newNetwork;
+    strcpy(newNetwork.ssid, ssid);
+    strcpy(newNetwork.password, password);
+    networks.push_back(newNetwork);
+    ModuleConfig::WriteConfigToFile();
 }
 
 void ModuleConfig::SetupModule(const char *raw_config) {
-	DynamicJsonDocument json_config(JSON_CAPACITY);
-	deserializeJson(json_config, raw_config);
-	timezone_offset = json_config["timezoneOffset"];
-	timezone_offset *= 60; // Offset from node.js is in minutes, we need seconds
-	strcpy(name, json_config["name"]);
-	ModuleConfig::WriteConfigToFile();
+    DynamicJsonDocument json_config(JSON_CAPACITY);
+    deserializeJson(json_config, raw_config);
+    timezone_offset = json_config["timezoneOffset"];
+    timezone_offset *=
+	60;  // Offset from node.js is in minutes, we need seconds
+    strcpy(name, json_config["name"]);
+    ModuleConfig::WriteConfigToFile();
 }
 
 void PlantConfig::SetupPlant(const char *raw_config) {
-	DynamicJsonDocument json_config(JSON_CAPACITY);
-	deserializeJson(json_config, raw_config);
+    DynamicJsonDocument json_config(JSON_CAPACITY);
+    deserializeJson(json_config, raw_config);
 }

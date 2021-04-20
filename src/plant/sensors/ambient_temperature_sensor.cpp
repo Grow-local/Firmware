@@ -12,6 +12,4 @@
 
 #include "plant/sensors/ambient_temperature_sensor.h"
 
-float AmbientTemperatureSensor::ReadData() {
-	return this->readTemperature();
-}
+float AmbientTemperatureSensor::ReadData() { return this->readTemperature(); }

@@ -18,9 +18,9 @@
 #include "sensor.h"
 
 class AmbientTemperatureSensor : public Sensor, public Adafruit_AM2320 {
-public:
-	AmbientTemperatureSensor() : Sensor("ambientTemperature") { }
-	float ReadData() override;
+   public:
+    AmbientTemperatureSensor() : Sensor("ambientTemperature") {}
+    float ReadData() override;
 };
 
 #endif

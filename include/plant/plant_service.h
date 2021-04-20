@@ -27,19 +27,19 @@
 #include "plant/sensors/stemma_sensor.h"
 
 class PlantService : public Task {
-  public:
-	bool Callback();
+   public:
+    bool Callback();
 
-	void CheckSensors();
-	void SaveToFile();
-	void ReadFromFile();
+    void CheckSensors();
+    void SaveToFile();
+    void ReadFromFile();
 
-	PlantService(Scheduler *scheduler);
-	~PlantService(){};
+    PlantService(Scheduler *scheduler);
+    ~PlantService(){};
 
-  private:
-	AmbientTemperatureSensor *ambient_temperature_sensor;
-	AmbientHumiditySensor *ambient_humidity_sensor;
+   private:
+    AmbientTemperatureSensor *ambient_temperature_sensor;
+    AmbientHumiditySensor *ambient_humidity_sensor;
 };
 
 #endif

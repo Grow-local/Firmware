@@ -21,13 +21,13 @@
 #include "config.h"
 
 class ModuleService {
-  public:
-	void GetModuleInfo(char *info);
+   public:
+    void GetModuleInfo(char *info);
 
-	ModuleService();
-	~ModuleService();
+    ModuleService();
+    ~ModuleService();
 
-  private:
+   private:
 };
 
 #endif

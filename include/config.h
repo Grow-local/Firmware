@@ -17,6 +17,7 @@
 #include <SPIFFS.h>
 #include <TaskSchedulerDeclarations.h>
 #include <time.h>
+
 #include <vector>
 
 const size_t CONFIG_MAX_FILE_SIZE = 2000;
@@ -24,7 +25,7 @@ const size_t JSON_CAPACITY = JSON_OBJECT_SIZE(2) + CONFIG_MAX_FILE_SIZE;
 
 // Time Settings
 #define TIME_SERVER "pool.ntp.org"
-#define DAYLIGHT_SAVINGS_OFFSET 0 // 3600
+#define DAYLIGHT_SAVINGS_OFFSET 0  // 3600
 #define TIMESTAMP_LENGTH 20
 
 // Module Config Settings
@@ -45,33 +46,33 @@ const size_t JSON_CAPACITY = JSON_OBJECT_SIZE(2) + CONFIG_MAX_FILE_SIZE;
 
 #define NETWORK_MAX_STRING_LENGTH 100
 struct Network {
-	char ssid[NETWORK_MAX_STRING_LENGTH];
-	char password[NETWORK_MAX_STRING_LENGTH];
+    char ssid[NETWORK_MAX_STRING_LENGTH];
+    char password[NETWORK_MAX_STRING_LENGTH];
 };
 
 class ModuleConfig {
-  public:
-	static void ReadConfigFromFile();
-	static void WriteConfigToFile();
-	static void AddNetwork(const char *ssid, const char *password);
-	static std::vector<Network> GetNetworks() { return networks; }
-	static const char *GetName() { return name; }
-	static int32_t GetTimezoneOffset() { return timezone_offset; }
-	static void SetupModule(const char *raw_config);
+   public:
+    static void ReadConfigFromFile();
+    static void WriteConfigToFile();
+    static void AddNetwork(const char *ssid, const char *password);
+    static std::vector<Network> GetNetworks() { return networks; }
+    static const char *GetName() { return name; }
+    static int32_t GetTimezoneOffset() { return timezone_offset; }
+    static void SetupModule(const char *raw_config);
 
-  private:
-	static char name[100];
-	static int32_t timezone_offset;
-	static std::vector<Network> networks;
+   private:
+    static char name[100];
+    static int32_t timezone_offset;
+    static std::vector<Network> networks;
 };
 
 class PlantConfig {
-  public:
-	static const char *GetName() { return name; }
-	static void SetupPlant(const char *raw_config);
+   public:
+    static const char *GetName() { return name; }
+    static void SetupPlant(const char *raw_config);
 
-  private:
-	static char name[100];
+   private:
+    static char name[100];
 };
 
 #endif

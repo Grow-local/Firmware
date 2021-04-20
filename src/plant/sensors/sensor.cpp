@@ -12,35 +12,36 @@
 
 #include "plant/sensors/sensor.h"
 
-Sensor::Sensor(const char* label) {
-	this->label = label;
-}
+Sensor::Sensor(const char* label) { this->label = label; }
 
 void Sensor::RecordData(struct tm* timestamp) {
-	struct SensorData data;
-	strftime(data.timestamp, TIMESTAMP_LENGTH, "%FT%T", timestamp);
-	do {
-		data.value = this->ReadData();
-	} while (isnan(data.value));
-	data_history.push_back(data);
-	if (data_history.size() > DATA_MAX_SIZE) data_history.erase(data_history.begin());
+    struct SensorData data;
+    strftime(data.timestamp, TIMESTAMP_LENGTH, "%FT%T", timestamp);
+    do {
+	data.value = this->ReadData();
+    } while (isnan(data.value));
+    data_history.push_back(data);
+    if (data_history.size() > DATA_MAX_SIZE)
+	data_history.erase(data_history.begin());
 }
 
 void Sensor::SaveToFile(File* file) {
-	file->printf("\"%s\":[", label);
-	for (auto data : data_history) {
-		file->printf("{\"value\":%.1f,\"time\":\"%s\"}", data.value, data.timestamp);
-		if (strcmp(data.timestamp, data_history.back().timestamp)) file->print(",");
-	}
-	file->print("]");
+    file->printf("\"%s\":[", label);
+    for (auto data : data_history) {
+	file->printf("{\"value\":%.1f,\"time\":\"%s\"}", data.value,
+	             data.timestamp);
+	if (strcmp(data.timestamp, data_history.back().timestamp))
+	    file->print(",");
+    }
+    file->print("]");
 }
 
 void Sensor::ReadFromJSON(DynamicJsonDocument* json) {
-	JsonArray json_data = (*json)[this->label];
-	for (auto json_point : json_data) {
-		struct SensorData data_point;
-		data_point.value = json_point["value"];
-		strcpy(data_point.timestamp, json_point["time"]);
-		this->data_history.push_back(data_point);
-	}
+    JsonArray json_data = (*json)[this->label];
+    for (auto json_point : json_data) {
+	struct SensorData data_point;
+	data_point.value = json_point["value"];
+	strcpy(data_point.timestamp, json_point["time"]);
+	this->data_history.push_back(data_point);
+    }
 }

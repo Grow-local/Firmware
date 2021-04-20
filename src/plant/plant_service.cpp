@@ -13,61 +13,61 @@
 #include "plant/plant_service.h"
 
 bool PlantService::Callback() {
-	CheckSensors();
-	SaveToFile();
-	return true;
+    CheckSensors();
+    SaveToFile();
+    return true;
 }
 
 void PlantService::CheckSensors() {
-	struct tm timeinfo;
-	getLocalTime(&timeinfo);
+    struct tm timeinfo;
+    getLocalTime(&timeinfo);
 #ifdef DEBUG
-	Serial.println(&timeinfo, "Reading plant sensors at %FT%T...");
+    Serial.println(&timeinfo, "Reading plant sensors at %FT%T...");
 #endif
-	this->ambient_temperature_sensor->RecordData(&timeinfo);
-	this->ambient_humidity_sensor->RecordData(&timeinfo);
+    this->ambient_temperature_sensor->RecordData(&timeinfo);
+    this->ambient_humidity_sensor->RecordData(&timeinfo);
 }
 
 void PlantService::SaveToFile() {
-	File file = SPIFFS.open("/data.json", FILE_WRITE);
-	if (!file) {
+    File file = SPIFFS.open("/data.json", FILE_WRITE);
+    if (!file) {
 #ifdef DEBUG
-		Serial.println("Failed to open data file for writing");
+	Serial.println("Failed to open data file for writing");
 #endif
-		return;
-	}
-	file.print("{");
-	this->ambient_temperature_sensor->SaveToFile(&file);
-	file.print(",");
-	this->ambient_humidity_sensor->SaveToFile(&file);
-	file.print("}");
-	file.close();
+	return;
+    }
+    file.print("{");
+    this->ambient_temperature_sensor->SaveToFile(&file);
+    file.print(",");
+    this->ambient_humidity_sensor->SaveToFile(&file);
+    file.print("}");
+    file.close();
 }
 
 void PlantService::ReadFromFile() {
-	File file = SPIFFS.open("/data.json", "r");
-	if (!file) {
+    File file = SPIFFS.open("/data.json", "r");
+    if (!file) {
 #ifdef DEBUG
-		Serial.println("Failed to open data file for reading");
+	Serial.println("Failed to open data file for reading");
 #endif
-		return;
-	}
+	return;
+    }
 
-	DynamicJsonDocument json(20000);
-	deserializeJson(json, file);
+    DynamicJsonDocument json(20000);
+    deserializeJson(json, file);
 
-	this->ambient_temperature_sensor->ReadFromJSON(&json);
-	this->ambient_humidity_sensor->ReadFromJSON(&json);
-	file.close();
+    this->ambient_temperature_sensor->ReadFromJSON(&json);
+    this->ambient_humidity_sensor->ReadFromJSON(&json);
+    file.close();
 }
 
 PlantService::PlantService(Scheduler *scheduler)
-	: Task(CHECK_SENSOR_PERIOD, TASK_FOREVER, scheduler, true) {
-	this->ambient_temperature_sensor = new AmbientTemperatureSensor();
-	this->ambient_humidity_sensor = new AmbientHumiditySensor();
+    : Task(CHECK_SENSOR_PERIOD, TASK_FOREVER, scheduler, true) {
+    this->ambient_temperature_sensor = new AmbientTemperatureSensor();
+    this->ambient_humidity_sensor = new AmbientHumiditySensor();
 
-	this->ambient_temperature_sensor->begin();
-	this->ambient_humidity_sensor->begin();
+    this->ambient_temperature_sensor->begin();
+    this->ambient_humidity_sensor->begin();
 
-	ReadFromFile();
+    ReadFromFile();
 }
